@@ -1,5 +1,7 @@
-﻿using Basket.API.Repositories.Interfaces;
+﻿using Basket.API.GrpcServices;
+using Basket.API.Repositories.Interfaces;
 using Basket.API.Repositories.Services;
+using Discount.Grpc.Protos;
 
 namespace Basket.API.Extensions
 {
@@ -12,6 +14,11 @@ namespace Basket.API.Extensions
                 options.Configuration = configuration.GetValue<string>("CacheSettings:ConnectionString");
             });
             services.AddScoped<IBasketRepository, BasketRepository>();
+
+            services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
+                options => options.Address = new Uri(configuration["GrpcSettings:DiscountUrl"]));
+
+            services.AddScoped<DiscountGrpcService>();
         }
     }
 }

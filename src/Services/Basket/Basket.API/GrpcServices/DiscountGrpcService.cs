@@ -1,19 +1,18 @@
-﻿//namespace Basket.API.GrpcServices
-//{
-//    public class DiscountGrpcService
-//    {
-//        private readonly DiscountProtoService.DiscountProtoServiceClient _discountProtoService;
+﻿using Discount.Grpc.Protos;
+using static Discount.Grpc.Protos.DiscountProtoService;
 
-//        public DiscountGrpcService(DiscountProtoService.DiscountProtoServiceClient discountProtoService)
-//        {
-//            _discountProtoService = discountProtoService ?? throw new ArgumentNullException(nameof(discountProtoService));
-//        }
+namespace Basket.API.GrpcServices
+{
+    public class DiscountGrpcService
+    {
+        private readonly DiscountProtoServiceClient _discountProtoService;
 
-//        public async Task<CouponModel> GetDiscount(string productName)
-//        {
-//            var discountRequest = new GetDiscountRequest { ProductName = productName };
+        public DiscountGrpcService(DiscountProtoServiceClient discountProtoService)
+        {
+            _discountProtoService = discountProtoService ?? throw new ArgumentNullException(nameof(discountProtoService));
+        }
 
-//            return await _discountProtoService.GetDiscountAsync(discountRequest);
-//        }
-//    }
-//}
+        public async Task<CouponModel> GetDiscount(string productName) 
+            => await _discountProtoService.GetDiscountAsync(new GetDiscountRequest { ProductName = productName });
+    }
+}
